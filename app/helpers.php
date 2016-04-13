@@ -98,7 +98,7 @@ function route($route, $parameters = [], $type = UrlGeneratorInterface::ABSOLUTE
  *
  * @param  array|string $key
  * @param  mixed $default
- * @return Session|mixed
+ * @return Session|mixed|null
  */
 function session($key = null, $default = null)
 {
@@ -110,7 +110,10 @@ function session($key = null, $default = null)
     }
 
     if (is_array($key)) {
-        return $session->set(key($key), current($key));
+        $session->set(key($key), current($key));
+
+        /** @noinspection PhpInconsistentReturnPointsInspection */
+        return;
     }
 
     return $session->get($key, $default);

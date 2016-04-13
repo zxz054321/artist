@@ -18,6 +18,7 @@ class ConfigServiceProvider implements ServiceProviderInterface
      *
      * This method should only be used to configure services and parameters.
      * It should not get services.
+     * @param Application $app
      */
     public function register(Application $app)
     {
@@ -38,6 +39,7 @@ class ConfigServiceProvider implements ServiceProviderInterface
     protected function loadConfigurationFiles(\Illuminate\Contracts\Config\Repository $repository)
     {
         foreach ($this->getConfigurationFiles() as $key => $path) {
+            /** @noinspection PhpIncludeInspection */
             $repository->set($key, require $path);
         }
     }
@@ -56,6 +58,7 @@ class ConfigServiceProvider implements ServiceProviderInterface
         foreach (Finder::create()->files()->name('*.php')->in($configPath) as $file) {
             $nesting = $this->getConfigurationNesting($file, $configPath);
 
+            /** @noinspection PhpUndefinedMethodInspection */
             $files[ $nesting.basename($file->getRealPath(), '.php') ] = $file->getRealPath();
         }
 
@@ -64,9 +67,9 @@ class ConfigServiceProvider implements ServiceProviderInterface
 
     /**
      * Get the configuration file nesting path.
-     *
-     * @param  \Symfony\Component\Finder\SplFileInfo $file
-     * @param  string $configPath
+
+     * @param SplFileInfo $file
+     * @param $configPath
      * @return string
      */
     protected function getConfigurationNesting(SplFileInfo $file, $configPath)
@@ -86,6 +89,7 @@ class ConfigServiceProvider implements ServiceProviderInterface
      * This method is called after all services are registered
      * and should be used for "dynamic" configuration (whenever
      * a service must be requested).
+     * @param Application $app
      */
     public function boot(Application $app)
     {
