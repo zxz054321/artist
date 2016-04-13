@@ -17,9 +17,15 @@ elixir(function (mix) {
         //more sytles
     ], 'public/all.css');
 
+    mix.styles([
+        'site.css',
+        'admin.css'
+    ], 'public/admin.css');
+
     mix.coffee([
         'site.coffee',
-        //more scripts
+        'app.coffee',
+        'controllers/*.coffee',
     ], 'public/all.js');
 
     //mix.version([

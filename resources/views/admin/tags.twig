@@ -1,0 +1,28 @@
+{% extends "admin/_layout.twig" %}
+
+{% block style %}
+    {{ parent() }}
+
+    <style>
+        .tag {
+            margin-right: 1em;
+            margin-bottom: 1em;
+        }
+    </style>
+{% endblock %}
+
+{% block title %} Tags {% endblock %}
+
+{% block page %}
+    <div class="text-center"
+         ng-app="app"
+         ng-controller="TagCtrl">
+        <a class="btn btn-default tag" type="button"
+           ng-repeat="(tag,items) in tags">
+            {{ i.ng('tag') }}
+            <span class="badge">
+               {{ i.ng('items.length') }}
+           </span>
+        </a>
+    </div>
+{% endblock %}

@@ -5,8 +5,12 @@
 
 namespace App\Providers;
 
+use App\Repositories\Content\Content;
+use App\Repositories\Content\Drivers\File;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use League\Flysystem\Filesystem;
+use League\Flysystem\Adapter\Local;
 
 class AppServiceProvider implements ServiceProviderInterface
 {
@@ -19,6 +23,20 @@ class AppServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
+        $app['disk'] = $app->share(function () {
+            $adapter    = new Local(STORAGE_PATH.'/app');
+            $filesystem = new Filesystem($adapter);
+
+            return $filesystem;
+        });
+
+        $app['content.revealed'] = $app->share(function () {
+            return new Content(new File('contents/revealed'));
+        });
+
+        $app['content.unrevealed'] = $app->share(function () {
+            return new Content(new File('contents/unrevealed'));
+        });
     }
 
     /**

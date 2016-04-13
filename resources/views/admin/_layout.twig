@@ -1,0 +1,27 @@
+{% extends "admin/_bootstrap.twig" %}
+
+{% macro ng(contents) %}{{ '{{' ~ contents ~ '}}' }}{% endmacro %}
+
+{% import _self as i %}
+
+{% block body %}
+    <div id="body">
+     {% include 'admin/_navbar.twig' %}
+
+        <div class="container">
+            <div class="header text-center">
+                {% block header %}
+                    <h1>{% block title %}{% endblock %}</h1>
+                {% endblock %}
+            </div>
+
+            {% block page %}{% endblock %}
+        </div>
+    </div>
+
+    <div id="bottom">
+        <div class="container">
+            {% include 'admin/_copyright.twig' %}
+        </div>
+    </div>
+{% endblock %}

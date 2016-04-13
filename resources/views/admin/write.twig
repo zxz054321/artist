@@ -1,0 +1,124 @@
+{% extends "admin/_layout.twig" %}
+
+{% block style %}
+    {{ parent() }}
+
+    <link href="//cdn.bootcss.com/simplemde/1.10.0/simplemde.min.css" rel="stylesheet">
+    <style>
+        .editor-toolbar {
+            background: white;
+        }
+    </style>
+{% endblock %}
+
+{% block title %}Write{% endblock %}
+
+{% block page %}
+    <form
+            ng-app="app"
+            ng-controller="WriteCtrl"
+            ng-submit="submit()"
+            ng-cloak>
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" class="form-control"
+                                   ng-model="data.title">
+                        </div>
+
+                        <div ng-class="{
+                        'form-group':true,
+                        'has-success': check.route,
+                        'has-error':!check.route
+                }">
+                            <label>Route</label>
+                            <label class="control-label"
+                                   ng-show="checked.route">
+                                {{ i.ng("check.route ? 'Nice name' : 'Already exists'") }}
+                            </label>
+                            <input type="text" class="form-control"
+                                   ng-model="data.route"
+                                   ng-blur="onBlur()">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Summary</label>
+                    <textarea class="form-control"
+                              ng-model="data.summary"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Content</label>
+                            <textarea id="editor"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-sm-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label>Tags</label>
+                            <input type="text" class="form-control"
+                                   ng-model="data.tags">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Cover</label>
+                            <input type="url" class="form-control"
+                                   ng-model="data.cover">
+
+                            <img class="img-responsive"
+                                 ng-src="{{ i.ng('data.cover') }}"
+                                 ng-show="data.cover">
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-class="{
+        'form-group':true,
+        'has-success':result,
+        'has-error':!result
+        }">
+                    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                        <div class="btn-group" role="group">
+                            <button type="submit" class="btn btn-primary"
+                                    ng-click="setType('published')">Publish
+                            </button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="submit" class="btn btn-default"
+                                    ng-click="setType('draft')">Draft
+                            </button>
+                        </div>
+                        {#<div class="btn-group" role="group">#}
+                        {#<button type="submit" class="btn btn-info"#}
+                        {#ng-click="setType('draft')">Preview#}
+                        {#</button>#}
+                        {#</div>#}
+                    </div>
+
+                    <label class="control-label"
+                           ng-show="checked.submit">
+                        {{ i.ng("result?'Success!':'Error!'") }}
+                        {{ i.ng("err=='route.exists'?'Route exists.':''") }}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block script %}
+    {{ parent() }}
+
+    <script src="//cdn.bootcss.com/simplemde/1.10.0/simplemde.min.js"></script>
+    <script>
+        simplemde = new SimpleMDE({element: $("#editor")[0]});
+    </script>
+{% endblock %}
