@@ -31,10 +31,9 @@ $admin = $app['controllers_factory']
 $admin->get('/', AdminController::class.'::login');
 $admin->get('login', AdminController::class.'::login')->bind('login');
 $admin->get('dashboard', AdminController::class.'::dashboard')->bind('dashboard');
+
 $admin->get('write', AdminController::class.'::write')->bind('write');
 $admin->get('contents', AdminController::class.'::contents')->bind('contents');
-$admin->get('tags', AdminController::class.'::tags')->bind('tags');
-$admin->get('navbar', AdminController::class.'::navbar')->bind('navbar');
 
 $admin->get('content', ContentController::class.'::all');
 $admin->get('content/check', ContentController::class.'::check');
@@ -42,7 +41,5 @@ $admin->post('content/store', ContentController::class.'::store');
 $admin->get('content/{id}', ContentController::class.'::raw');
 $admin->put('content/{id}', ContentController::class.'::update');
 $admin->delete('content/{id}', ContentController::class.'::delete');
-
-$admin->get('tag', TagController::class.'::index');
 
 $app->mount('admin', $admin);

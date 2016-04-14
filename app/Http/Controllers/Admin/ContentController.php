@@ -5,7 +5,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Services\Tag;
 use Symfony\Component\HttpFoundation\Request;
 
 class ContentController
@@ -39,7 +38,6 @@ class ContentController
 
     public function update(Request $request, $id)
     {
-        //TODO update tag references
         $data = $this->decodeRequest($request);
 
         if (!$this->service->exists($id)) {
@@ -49,17 +47,13 @@ class ContentController
             ]);
         }
 
-        /** @var Tag $tagService */
-        $tagService = app('tag');
-        $tags       = $this->parseTags($data->tags);
+        $tags = $this->parseTags($data->tags);
 
         $arr               = $this->parseData($data);
         $arr['tags']       = $tags;
         $arr['updated_at'] = time();
 
-        $result = $this->service->update($id, $arr)
-        and
-        $tagService->sync($id, $tags)->save();
+        $result = $this->service->update($id, $arr);
 
         return app()->json([
             'result' => $result,
@@ -109,23 +103,8 @@ class ContentController
 
     public function delete($id)
     {
-        /** @var Tag $tagService */
-        $tagService = app('tag');
-
-        $tags = $this->service->getRevealed()->read($id)['tags'];
-
-        if ($tags) {
-            $tagService->unreference($id, $tags);
-        }
-
-        $tags = $this->service->getUnrevealed()->read($id)['tags'];
-
-        if ($tags) {
-            $tagService->unreference($id, $tags);
-        }
-
         return app()->json([
-            'result' => $tagService->save() && $this->service->delete($id),
+            'result' => $this->service->delete($id),
         ]);
     }
 
@@ -140,9 +119,7 @@ class ContentController
             ]);
         }
 
-        /** @var Tag $tagService */
-        $tagService = app('tag');
-        $tags       = $this->parseTags($data->tags);
+        $tags = $this->parseTags($data->tags);
 
         $arr               = $this->parseData($data);
         $arr['tags']       = $tags;
@@ -150,16 +127,9 @@ class ContentController
 
         $id = $this->service->create($arr);
 
-        $result =
-            $id
-            &&
-            $tagService->sync($data->route, $tags)->save();
-
         return app()->json([
-            'result' => $result,
+            'result' => (bool)$id,
             'id'     => $id,
         ]);
     }
-
-
 }

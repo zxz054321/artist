@@ -38,10 +38,6 @@ class AppServiceProvider implements ServiceProviderInterface
         $app['content.unrevealed'] = $app->share(function () {
             return new Content(new File('contents/unrevealed'));
         });
-
-        $app['tag'] = $app->share(function () {
-            return new Tag();
-        });
     }
 
     /**
