@@ -5,109 +5,31 @@
 
 namespace App\Repositories\Tag;
 
-use League\Flysystem\Filesystem;
+use Illuminate\Support\Collection;
 
+/**
+ * Class Manager
+ * @package App\Repositories\Tag
+ * @method Collection collection
+ * @method setCollection(Collection $collection)
+ * @method Tag make($tag)
+ * @method Tag tag($name)
+ * @method bool exists($tag)
+ */
 class Manager
 {
     /**
-     * @var Filesystem
+     * @var DriverContract
      */
-    protected $disk;
-    protected $tags = [];
+    protected $driver;
 
-    public function __construct()
+    public function __construct(DriverContract $driver)
     {
-        $this->disk = app('disk');
-
-        if ($this->disk->has('tags')) {
-            $tags = unserialize($this->disk->read('tags'));
-
-            foreach ($tags as $tag => $val) {
-                $this->tags[ $tag ] = new Tag($val);
-            }
-        }
+        $this->driver = $driver;
     }
 
-    /**
-     * @param $tag
-     * @return Tag
-     */
-    public function make($tag)
+    public function __call($method, $arguments)
     {
-        if (!isset($this->tags[ $tag ])) {
-            $this->tags[ $tag ] = new Tag();
-        }
-
-        return $this->tags[ $tag ];
-    }
-
-    public function toArray()
-    {
-        $data = [];
-
-        /** @var Tag $tag */
-        foreach ($this->tags as $name => $tag) {
-            $data[ $name ] = $tag->all();
-        }
-
-        return $data;
-    }
-
-    /**
-     * @param $name
-     * @return Tag
-     * @throws TagNotFoundException
-     */
-    public function tag($name)
-    {
-        if (!$this->exists($name)) {
-            throw new TagNotFoundException;
-        }
-
-        return $this->tags[ $name ];
-    }
-
-    public function exists($name)
-    {
-        return isset($this->tags[ $name ]);
-    }
-
-    public function destory($name)
-    {
-        if (!$this->exists($name)) {
-            throw new TagNotFoundException;
-        }
-
-        unset($this->tags[ $name ]);
-    }
-
-    public function count()
-    {
-        return count($this->tags);
-    }
-
-    public function clean()
-    {
-        $gc = [];
-
-        /** @var Tag $tag */
-        foreach ($this->tags as $name => $tag) {
-            if ($tag instanceof Tag && $tag->count()) {
-                continue;
-            }
-
-            $gc[] = $name;
-        }
-
-        foreach ($gc as $name) {
-            unset($this->tags[ $name ]);
-        }
-    }
-
-    public function save()
-    {
-        $data = $this->toArray();
-
-        return $this->disk->put('tags', serialize($data));
+        return call_user_func_array([$this->driver, $method], $arguments);
     }
 }

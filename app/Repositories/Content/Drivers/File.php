@@ -6,23 +6,28 @@
 namespace App\Repositories\Content\Drivers;
 
 use App\Repositories\Collection\FileCollection;
+use App\Repositories\Content\DriverContract;
 use Ramsey\Uuid\Uuid;
 
-class File extends FileCollection
+class File extends FileCollection implements DriverContract
 {
     protected $path;
-    protected $indexFile;
 
     public function __construct($path)
     {
         parent::__construct();
 
-        $this->path      = $path;
-        $this->indexFile = $path.'/index';
+        $this->path = $path;
+        $this->file = $path.'/index';
 
-        $this->load($this->indexFile);
+        $this->load();
     }
 
+    /**
+     * @param array $data
+     * @param string|null $id for recreate
+     * @return string|false uuid
+     */
     public function create(array $data, $id = null)
     {
         $uuid = is_null($id) ? Uuid::uuid1()->toString() : $id;
@@ -44,13 +49,18 @@ class File extends FileCollection
         return "{$this->path}/$id.md";
     }
 
-    public function update($primary, array $data)
+    /**
+     * @param $id
+     * @param array $data
+     * @return bool
+     */
+    public function update($id, array $data)
     {
-        $old  = $this->collection->get($primary);
+        $old  = $this->collection->get($id);
         $data = array_merge($old, $data);
 
         if (isset($data['content'])) {
-            $file = $this->contentFilePath($primary);
+            $file = $this->contentFilePath($id);
 
             if (!$this->disk->put($file, $data['content'])) {
                 return false;
@@ -59,60 +69,55 @@ class File extends FileCollection
             unset($data['content']);
         }
 
-        $this->collection->put($primary, $data);
+        $this->collection->put($id, $data);
 
         return true;
     }
 
-    public function delete($primary)
+    /**
+     * @param $id
+     * @return array|null
+     */
+    public function read($id)
     {
-        $file = $this->contentFilePath($primary);
-
-        if (!$this->disk->delete($file)) {
-            return false;
-        }
-
-        $this->collection->forget($primary);
-
-        return true;
-    }
-
-    public function read($primary)
-    {
-        $data = $this->collection->get($primary);
+        $data = $this->collection->get($id);
 
         if (!$data) {
             return null;
         }
 
-        $file            = $this->contentFilePath($primary);
+        $file            = $this->contentFilePath($id);
         $data['content'] = $this->disk->read($file);
 
         return $data;
     }
 
     /**
-     * @param string|array $primary
+     * @param $id
      * @return bool
      */
-    public function exists($primary)
+    public function delete($id)
     {
-        if (!is_array($primary)) {
-            return $this->collection->has($primary);
+        $file = $this->contentFilePath($id);
+
+        if (!$this->disk->delete($file)) {
+            return false;
+        }
+
+        $this->collection->forget($id);
+
+        return true;
+    }
+
+    public function exists($condition)
+    {
+        if (!is_array($condition)) {
+            return $this->collection->has($condition);
         }
 
         return $this->collection->contains(
-            key($primary),
-            current($primary)
+            key($condition),
+            current($condition)
         );
-    }
-
-    public function save($file = null)
-    {
-        if (is_null($file)) {
-            $file = $this->indexFile;
-        }
-
-        return parent::save($file);
     }
 }

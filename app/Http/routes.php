@@ -41,6 +41,7 @@ $admin->get('content/check', ContentController::class.'::check');
 $admin->post('content/store', ContentController::class.'::store');
 $admin->get('content/{id}', ContentController::class.'::raw');
 $admin->put('content/{id}', ContentController::class.'::update');
+$admin->delete('content/{id}', ContentController::class.'::delete');
 
 $admin->get('tag', TagController::class.'::index');
 

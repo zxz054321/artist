@@ -5,62 +5,48 @@
 
 namespace App\Repositories\Tag;
 
-class Tag
-{
-    protected $referrers;
+use Illuminate\Support\Collection;
 
-    public function __construct($referrers = [])
+/**
+ * Class Tag
+ * represents a single tag
+ * @package App\Repositories\Tag
+ */
+class Tag extends Collection
+{
+    public function unreference($referrer)
     {
-        $this->referrers = $referrers;
+        $key = array_search((string)$referrer, $this->items, true);
+
+        if (false !== $key) {
+            unset($this->items[ $key ]);
+        }
+
+        return count($this->items);
     }
 
     /**
      * @param string|array $referrer
      * @return $this
      */
-    public function refer($referrer)
+    public function referTo($referrer)
     {
         if (is_array($referrer)) {
             foreach ($referrer as $item) {
-                $this->singleRefer($item);
+                $this->uniqueAdd($item);
             }
         } else {
-            $this->singleRefer($referrer);
+            $this->uniqueAdd($referrer);
         }
 
         return $this;
     }
 
-    protected function singleRefer($referrer)
+    protected function uniqueAdd($referrer)
     {
-        if (!$this->exists($referrer)) {
-            $this->referrers[] = (string)$referrer;
+        if (!$this->contains($referrer)) {
+            $this->push((string)$referrer);
         }
     }
 
-    public function exists($name)
-    {
-        return in_array((string)$name, $this->referrers, true);
-    }
-
-    public function unreference($referrer)
-    {
-        $key = array_search((string)$referrer, $this->referrers, true);
-
-        if (false !== $key) {
-            unset($this->referrers[ $key ]);
-        }
-
-        return count($this->referrers);
-    }
-
-    public function count()
-    {
-        return count($this->referrers);
-    }
-
-    public function all()
-    {
-        return $this->referrers;
-    }
 }

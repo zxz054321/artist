@@ -5,7 +5,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Repositories\Tag\Manager as TagManager;
+use App\Services\Tag;
 use Symfony\Component\HttpFoundation\Request;
 
 class ContentController
@@ -37,34 +37,36 @@ class ContentController
         ]);
     }
 
-    public function store(Request $request)
+    public function update(Request $request, $id)
     {
-        $data = $this->parseRequest($request);
+        //TODO update tag references
+        $data = $this->decodeRequest($request);
 
-        if ($this->service->exists(['route' => $data->route])) {
+        if (!$this->service->exists($id)) {
             return app()->json([
                 'result' => false,
-                'err'    => 'route.exists',
+                'err'    => 'notfound',
             ]);
         }
 
-        $tags = $this->parseTags($data->tags);
+        /** @var Tag $tagService */
+        $tagService = app('tag');
+        $tags       = $this->parseTags($data->tags);
 
         $arr               = $this->parseData($data);
         $arr['tags']       = $tags;
-        $arr['created_at'] = time();
+        $arr['updated_at'] = time();
 
-        $id     = $this->service->create($arr);
-        $tagMgr = $this->makeTags($data->route, $tags);
-        $result = $id && $tagMgr->save();
+        $result = $this->service->update($id, $arr)
+        and
+        $tagService->sync($id, $tags)->save();
 
         return app()->json([
             'result' => $result,
-            'id'     => $id,
         ]);
     }
 
-    protected function parseRequest(Request $request)
+    protected function decodeRequest(Request $request)
     {
         return json_decode($request->getContent());
     }
@@ -105,39 +107,59 @@ class ContentController
         return $arr;
     }
 
-    protected function makeTags($referrer, array $tags)
+    public function delete($id)
     {
-        $tagMgr = new TagManager();
+        /** @var Tag $tagService */
+        $tagService = app('tag');
 
-        foreach ($tags as $tag) {
-            $tagMgr->make($tag)->refer($referrer);
+        $tags = $this->service->getRevealed()->read($id)['tags'];
+
+        if ($tags) {
+            $tagService->unreference($id, $tags);
         }
 
-        return $tagMgr;
+        $tags = $this->service->getUnrevealed()->read($id)['tags'];
+
+        if ($tags) {
+            $tagService->unreference($id, $tags);
+        }
+
+        return app()->json([
+            'result' => $tagService->save() && $this->service->delete($id),
+        ]);
     }
 
-    public function update(Request $request, $id)
+    public function store(Request $request)
     {
-        $data = $this->parseRequest($request);
+        $data = $this->decodeRequest($request);
 
-        if (!$this->service->exists($id)) {
+        if ($this->service->exists(['route' => $data->route])) {
             return app()->json([
                 'result' => false,
-                'err'    => 'notfound',
+                'err'    => 'route.exists',
             ]);
         }
 
-        $tags   = $this->parseTags($data->tags);
-        $tagMgr = $this->makeTags($id, $tags);
+        /** @var Tag $tagService */
+        $tagService = app('tag');
+        $tags       = $this->parseTags($data->tags);
 
         $arr               = $this->parseData($data);
         $arr['tags']       = $tags;
-        $arr['updated_at'] = time();
+        $arr['created_at'] = time();
 
-        $result = $this->service->update($id, $arr) && $tagMgr->save();
+        $id = $this->service->create($arr);
+
+        $result =
+            $id
+            &&
+            $tagService->sync($data->route, $tags)->save();
 
         return app()->json([
             'result' => $result,
+            'id'     => $id,
         ]);
     }
+
+
 }

@@ -15,6 +15,7 @@ class FileCollection
      * @var Filesystem
      */
     protected $disk;
+    protected $file;
 
     /**
      * @var Collection
@@ -26,12 +27,12 @@ class FileCollection
         $this->disk = app('disk');
     }
 
-    public function load($file)
+    public function load()
     {
         $data = [];
 
-        if ($this->disk->has($file)) {
-            $data = unserialize($this->disk->read($file));
+        if ($this->disk->has($this->file)) {
+            $data = unserialize($this->disk->read($this->file));
 
             if (!is_array($data)) {
                 throw new DataSpoiledException;
@@ -46,9 +47,9 @@ class FileCollection
         return $this->collection;
     }
 
-    public function save($file)
+    public function save()
     {
-        return $this->disk->put($file,
+        return $this->disk->put($this->file,
             serialize($this->collection->toArray())
         );
     }

@@ -187,4 +187,21 @@ class Content
 
         return $handler->save() ? $id : false;
     }
+
+    public function delete($id)
+    {
+        if ($this->revealed->exists($id)) {
+            if (!$this->revealed->delete($id)) {
+                return false;
+            }
+        }
+
+        if ($this->unrevealed->exists($id)) {
+            if (!$this->unrevealed->delete($id)) {
+                return false;
+            }
+        }
+
+        return $this->revealed->save() && $this->unrevealed->save();
+    }
 }

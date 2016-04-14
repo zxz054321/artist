@@ -7,6 +7,7 @@ namespace App\Providers;
 
 use App\Repositories\Content\Content;
 use App\Repositories\Content\Drivers\File;
+use App\Services\Tag;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use League\Flysystem\Filesystem;
@@ -36,6 +37,10 @@ class AppServiceProvider implements ServiceProviderInterface
 
         $app['content.unrevealed'] = $app->share(function () {
             return new Content(new File('contents/unrevealed'));
+        });
+
+        $app['tag'] = $app->share(function () {
+            return new Tag();
         });
     }
 

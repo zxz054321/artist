@@ -201,4 +201,47 @@ class ContentTest extends \TestCase
 
         $this->assertEquals(true, $exception);
     }
+
+    public function testDelete()
+    {
+        $data = $this->data();
+
+        $id = $this->content->create($data);
+
+        /*
+         * create a new draft from it
+         */
+        $data['content']    = str_random(128);
+        $data['updated_at'] = time() + 200;
+        $data['status']     = ContentRepository::STATUS_DRAFT;
+
+        $this->content->update($id, $data);
+
+        /*
+         * before delete
+         */
+        $this->assertEquals(true,
+            $this->content->getRevealed()->exists($id)
+        );
+
+        $this->assertEquals(true,
+            $this->content->getUnrevealed()->exists($id)
+        );
+
+        /*
+         * delete
+         */
+        $this->assertEquals(true, $this->content->delete($id));
+
+        /*
+         * after delete
+         */
+        $this->assertEquals(false,
+            $this->content->getRevealed()->exists($id)
+        );
+
+        $this->assertEquals(false,
+            $this->content->getUnrevealed()->exists($id)
+        );
+    }
 }

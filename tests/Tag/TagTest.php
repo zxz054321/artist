@@ -7,47 +7,23 @@ use App\Repositories\Tag\Tag;
  */
 class TagTest extends TestCase
 {
-    public function testCount()
+    public function testReferTo()
     {
-        $tag = $this->generateTestTag();
+        $tag = new Tag(['aaa', 'bbb',]);
 
-        $this->assertEquals(2, $tag->count());
-
-        return $tag;
-    }
-
-    protected function generateTestTag()
-    {
-        return new Tag([
-            'aaa',
-            'bbb',
-        ]);
-    }
-
-    /**
-     * @depends testCount
-     */
-    public function testExists(Tag $tag)
-    {
-        $this->assertEquals(true, $tag->exists('aaa'));
-        $this->assertEquals(true, $tag->exists('bbb'));
-        $this->assertEquals(false, $tag->exists('ccc'));
-    }
-
-    public function testRefer()
-    {
-        $tag = $this->generateTestTag();
-
-        $tag->refer('000');
+        $tag->referTo('000');
         $this->assertEquals(3, $tag->count());
 
-        $tag->refer([1, '1111']);
+        $tag->referTo(['cc', '1111']);
+        $this->assertEquals(5, $tag->count());
+
+        $tag->referTo('000');
         $this->assertEquals(5, $tag->count());
     }
 
     public function testUnreference()
     {
-        $tag = $this->generateTestTag();
+        $tag = new Tag(['aaa', 'bbb',]);
 
         $tag->unreference('000');
         $this->assertEquals(2, $tag->count());

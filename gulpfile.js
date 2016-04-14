@@ -26,7 +26,7 @@ elixir(function (mix) {
         'site.coffee',
         'app.coffee',
         'controllers/*.coffee',
-    ], 'public/all.js');
+    ], 'public/admin.js');
 
     //mix.version([
     //    'all.css',

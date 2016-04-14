@@ -7,17 +7,16 @@ angular.module('app').controller 'WriteCtrl', [
         $scope.checked = {}
         $scope.id = getQueryString('edit')
 
+        # fetch content====================
         if $scope.id
             $http.get("content/#{$scope.id}")
             .success (res)->
-#                console.log(res)
                 raw = res.raw
-
                 window.simplemde.value(raw.content)
 
                 delete raw.content
                 $scope.data = raw
-                #                console.log($scope.data)
+
                 return
 
         $scope.setType = (type)->
@@ -31,6 +30,17 @@ angular.module('app').controller 'WriteCtrl', [
 #                    console.log(res)
                     $scope.check.route = !res.exists
                     $scope.checked.route = true
+
+        $scope.delete = ->
+            if confirm('Are you sure you want to delete this content?')
+                $http.delete('content/' + $scope.id)
+                .success (res)->
+                    if res.result
+                        window.location = 'contents'
+                        return
+
+                    $scope.err = res.err
+                    $scope.checked.submit = true
 
         $scope.submit = ->
             $scope.data.content = window.simplemde.value()

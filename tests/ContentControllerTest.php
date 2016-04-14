@@ -52,10 +52,10 @@ class ContentControllerTest extends TestCase
         $this->assertEquals('route.exists', $res->err);
     }
 
-    protected function doTestRequest($method, $route, $rawArr = null)
+    protected function doTestRequest($method, $route, $raw = null)
     {
-        if (is_null($rawArr)) {
-            $rawArr = [
+        if (is_null($raw)) {
+            $raw = [
                 'title'      => 'test1',
                 'route'      => '-test-'.str_random(),
                 'summary'    => str_random(64),
@@ -69,10 +69,10 @@ class ContentControllerTest extends TestCase
         $this->client->request($method,
             $route,
             [], [], [],
-            json_encode($rawArr)
+            json_encode($raw)
         );
 
-        return $rawArr;
+        return $raw;
     }
 
     protected function decode()
@@ -160,8 +160,7 @@ class ContentControllerTest extends TestCase
             "/admin/content/check?route={$route}"
         );
 
-        $res  = $this->client->getResponse()->getContent();
-        $data = json_decode($res);
+        $data = $this->decode();
 
         $this->assertEquals(true, $data->exists);
 
@@ -169,9 +168,21 @@ class ContentControllerTest extends TestCase
             '/admin/content/check?route=s5d4fd5'
         );
 
-        $res  = $this->client->getResponse()->getContent();
-        $data = json_decode($res);
+        $data = $this->decode();
 
         $this->assertEquals(false, $data->exists);
+    }
+
+    public function testDelete()
+    {
+        $this->doTestRequest('POST', '/admin/content/store');
+
+        $id = $this->decode()->id;
+
+        $this->client->request('DELETE', '/admin/content/'.$id);
+
+        $result = $this->decode()->result;
+
+        $this->assertEquals(true, $result);
     }
 }
