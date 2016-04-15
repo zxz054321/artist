@@ -5,6 +5,7 @@
     "twig/twig": "^1.24",
     "symfony/twig-bridge": "^3.0",
     "league/flysystem": "^1.0",
+    "monolog/monolog": "^1.18"
     "erusev/parsedown": "^1.6",
     "ramsey/uuid": "^3.3",
     "moontoast/math": "^1.1",

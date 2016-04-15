@@ -5,12 +5,21 @@
 
 use App\Foundation\Application;
 use App\Providers\AppServiceProvider;
+use Monolog\Logger;
 use Silex\Provider\TwigServiceProvider;
 
 $app   = new Application();
 $debug = config('app.debug');
 
+$app->register(new Silex\Provider\MonologServiceProvider(), [
+    'monolog.level'   => $debug ? Logger::WARNING : Logger::ERROR,
+    'monolog.logfile' => STORAGE_PATH.'/logs/app.log',
+]);
+
+$app->register(new Silex\Provider\SessionServiceProvider());
+
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+
 $app->register(new TwigServiceProvider(), [
     'twig.path'    => VIEW_PATH,
     'twig.options' => [
@@ -27,5 +36,5 @@ $app->register(new TwigServiceProvider(), [
         'strict_variables' => true,
     ],
 ]);
-$app->register(new Silex\Provider\SessionServiceProvider());
+
 $app->register(new AppServiceProvider());
