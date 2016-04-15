@@ -16,6 +16,7 @@ angular.module('app').controller 'WriteCtrl', [
 
                 delete raw.content
                 $scope.data = raw
+                $scope.oldRoute = raw.route
 
                 return
 
@@ -24,7 +25,7 @@ angular.module('app').controller 'WriteCtrl', [
 
         $scope.onBlur = ->
             route = $scope.data.route
-            if route
+            if route and (route isnt $scope.oldRoute)
                 $http.get('content/check?route=' + route)
                 .success (res)->
 #                    console.log(res)
@@ -44,19 +45,24 @@ angular.module('app').controller 'WriteCtrl', [
 
         $scope.submit = ->
             $scope.data.content = window.simplemde.value()
-            console.log($scope.data)
+
             request = ->
                 if $scope.id
                     $http.put('content/' + $scope.id, $scope.data)
                 else
                     $http.post('content/store', $scope.data)
+
             request().success (res)->
-                console.log(res)
+#                console.log(res)
                 $scope.result = res.result
                 $scope.checked.submit = true
 
                 if !$scope.result
                     $scope.err = res.err
+                    return
+
+                if !$scope.id
+                    window.location = 'contents'
                     return
 
                 cleanup = ->
