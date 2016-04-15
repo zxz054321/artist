@@ -1,133 +1,56 @@
-{% extends "_bootstrap.twig" %}
+{% extends "_layout.twig" %}
 
-{% block style %}
-    {{ parent() }}
-
-    <style>
-        .mask {
-            fill: black;
-            opacity: 0.5;
-        }
-
-        .spot {
-            position: absolute;
-            color: white;
-            width: 360px;
-        }
-
-        .spot a {
-            color: white;
-        }
-
-        .list-group-item {
-            margin: 1.5em;
-            padding: 0;
-        }
-
-        .list-group-item .content {
-            padding: 0 15px 15px 15px;
-        }
-
-        @media screen and (max-width: 520px) {
-            .mask {
-                display: none;
-            }
-
-            .spot {
-                text-shadow: 2px 2px 15px #2a323a,
-                2px 2px 15px #2a323a,
-                2px 2px 15px #2a323a,
-                2px 2px 15px #2a323a,
-                2px 2px 15px #2a323a,
-                2px 2px 15px #2a323a,
-                2px 2px 15px #2a323a,
-                2px 2px 15px #2a323a;
-            }
-        }
-    </style>
-{% endblock %}
+{% block title %} AirSoft {% endblock %}
 
 {% block body %}
-    <div id="screen">
-        <div class="spot text-center">
-            <h2><a href="{{ url('article',{'id':headline.route}) }}">{{ headline.title }}</a></h2>
-            <p class="small">{{ headline.created_at }}</p>
-            <p>{{ headline.summary }}</p>
+    <div class="cloak">
+        <div id="screen">
+            <div class="text-center" id="highlight">
+                <small>{{ headline.created_at|date("F j, Y") }}</small>
+                <h2><a href="{{ url('article',{'route':headline.route}) }}">{{ headline.title }}</a></h2>
+                <p>{{ headline.summary }}</p>
+            </div>
+
+            <svg width="100%" height="100%">
+                <circle class="mask" cx="50%" r="250"/>
+            </svg>
         </div>
 
-        <svg width="100%" height="100%">
-            <circle class="mask" cx="50%" r="250"/>
-        </svg>
-    </div>
-
-    <div class="container">
-        <div class="list-group">
-            {% for item in contents %}
-                <a href="{{ url('article',{'id':item.route}) }}" class="list-group-item">
-                    <div class="row">
-                        <div class="col-sm-5">
-                            <img src="{{ item.cover }}" class="img-responsive">
-                        </div>
-                        <div class="col-sm-7">
-                            <div class="content">
-                                <div class="list-group-item-heading">
-                                    <h2>{{ item.title }}</h2>
+        {% if contents is not empty %}
+            <div class="container">
+                <div class="home list-group">
+                    {% for item in contents %}
+                        <a href="{{ url('article',{'route':item.route}) }}" class="list-group-item">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <img src="{{ item.cover }}" class="img-responsive">
                                 </div>
-                                <p class="list-group-item-text">
-                                    {{ item.summary }}
-                                </p>
+                                <div class="col-sm-7">
+                                    <div class="content">
+                                        <div class="list-group-item-heading">
+                                            <small class="text-muted">{{ item.created_at|date("F j, Y") }}</small>
+                                            <h2>{{ item.title }}</h2>
+                                        </div>
+                                        <p class="list-group-item-text">
+                                            {{ item.summary }}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </a>
-            {% endfor %}
-
-            {% for i in 0..3 %}
-                <a href="#" class="list-group-item">
-                    <div class="row">
-                        <div class="col-sm-5">
-                            <img src="wallhaven-215913.jpg" class="img-responsive" alt="Responsive image">
-                        </div>
-                        <div class="col-sm-7">
-                            <div class="list-group-item-heading">
-                                <h2>List group item heading</h2>
-                            </div>
-                            <p class="list-group-item-text">
-                                {% for i in 0..5 %}
-                                    Donec id elit non mi porta gravida at eget metus. Maecenas sed diam egerisus varius blandit.
-                                {% endfor %}
-                            </p>
-                        </div>
-                    </div>
-                </a>
-            {% endfor %}
-        </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
 
 {% block script %}
     <script src="//cdn.bootcss.com/vegas/2.2.0/vegas.min.js"></script>
-
+    {{ parent() }}
     <script>
-        $(window).resize(function () {
-            var winHeight = $(window).height();
-
-            $('#screen').height(winHeight);
-
-            $('.mask').attr('cy', (winHeight + 50) / 2 - $('.mask').height() / 2);
-
-            $('.spot').css({
-                top: (winHeight + 50) / 2 - $('.spot').height() / 2,
-                left: $(window).width() / 2 - $('.spot').width() / 2,
-            })
-        });
-
-        $(window).resize();
-
-        $('#screen').vegas({
-            slides: [
-                {src: "{{ headline.cover }}"},
-            ]
-        });
+        $('#screen').vegas({slides: [{src: "{{ headline.cover }}"}]});
+        $(window).resize(homeResize);
+        homeResize();
     </script>
 {% endblock %}

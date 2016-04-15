@@ -14,7 +14,7 @@ if (!defined('MIDDLEWARE')) {
 }
 
 $app->get('/', FrontController::class.'::index');
-$app->get('article/{id}.html', FrontController::class.'::show')->bind('article');
+$app->get('article/{route}.html', FrontController::class.'::show')->bind('article');
 
 /*
  * Auth

@@ -14,13 +14,18 @@ var elixir = require('laravel-elixir');
 elixir(function (mix) {
     mix.styles([
         'site.css',
-        //more sytles
-    ], 'public/all.css');
+        'front.css'
+    ], 'public/front.css');
 
-    mix.styles([
+   mix.styles([
         'site.css',
         'admin.css'
     ], 'public/admin.css');
+
+    mix.coffee([
+        'site.coffee',
+        'front.coffee',
+    ], 'public/front.js');
 
     mix.coffee([
         'site.coffee',

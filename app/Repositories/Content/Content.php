@@ -7,10 +7,13 @@ namespace App\Repositories\Content;
 
 use App\Repositories\Content\Exceptions\NotFoundException;
 use App\Repositories\Content\Exceptions\RouteExistsException;
+use Illuminate\Support\Collection;
 
 /**
  * Class Content
  * @package App\Repositories\Content
+ * @method Collection collection()
+ * @method array|null read($id)
  * @method bool save()
  */
 class Content
