@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "539bb4a0d0852b8c3d324a85f9092d1b",
-    "content-hash": "d2b0b40d4bbdbcb24970b5ebf42b0f25",
+    "hash": "e625f596a425717e08f09cbdf38caf09",
+    "content-hash": "9583ba3602097654f21361cdfe0d3f9f",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -391,16 +391,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.18.2",
+            "version": "1.19.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "064b38c16790249488e7a8b987acf1c9d7383c09"
+                "reference": "5f56ed5212dc509c8dc8caeba2715732abb32dbf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://packagist.phpcomposer.com/files/Seldaek/monolog/064b38c16790249488e7a8b987acf1c9d7383c09.zip",
-                "reference": "064b38c16790249488e7a8b987acf1c9d7383c09",
+                "url": "https://packagist.phpcomposer.com/files/Seldaek/monolog/5f56ed5212dc509c8dc8caeba2715732abb32dbf.zip",
+                "reference": "5f56ed5212dc509c8dc8caeba2715732abb32dbf",
                 "shasum": ""
             },
             "require": {
@@ -465,7 +465,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2016-04-02 13:12:58"
+            "time": "2016-04-12 18:29:35"
         },
         {
             "name": "moontoast/math",
