@@ -5,13 +5,15 @@ window.homeResize = ->
 
     $('#screen').height windowHeight
 
-    highlight.css
-        top:  (windowHeight + 50 - highlight.height()) / 2
-        left: (windowWidth - highlight.width()) / 2
-
     if windowWidth >= 520 and windowHeight >= 350
+        highlight.css
+            top:  (windowHeight + 50 - highlight.height()) / 2
+            left: (windowWidth - highlight.width()) / 2
         $('.mask').attr 'cy', (windowHeight + 50 - $('.mask').height() ) / 2
-
+    else
+        highlight.css
+            top:  65 #50+15
+            left: 15
     return
 
 window.articleResize = ->

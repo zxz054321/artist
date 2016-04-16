@@ -5,7 +5,7 @@
 {% block body %}
     <div class="cloak">
         <div id="screen">
-            <div class="text-center" id="highlight">
+            <div id="highlight">
                 <small>{{ headline.created_at|date("F j, Y") }}</small>
                 <h2><a href="{{ url('article',{'route':headline.route}) }}">{{ headline.title }}</a></h2>
                 <p>{{ headline.summary }}</p>
