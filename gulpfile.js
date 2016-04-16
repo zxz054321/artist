@@ -21,9 +21,4 @@ elixir(function (mix) {
         'site.coffee',
         //more scripts
     ], 'public/all.js');
-
-    //mix.version([
-    //    'all.css',
-    //    'all.js',
-    //]);
 });
