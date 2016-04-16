@@ -32,9 +32,4 @@ elixir(function (mix) {
         'app.coffee',
         'controllers/*.coffee',
     ], 'public/admin.js');
-
-    //mix.version([
-    //    'all.css',
-    //    'all.js',
-    //]);
 });
