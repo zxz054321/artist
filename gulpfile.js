@@ -22,6 +22,11 @@ elixir(function (mix) {
         'admin.css'
     ], 'public/admin.css');
 
+    //mix.less([
+    //    'site.less',
+    //    //more sytles
+    //], 'public/all.css');
+
     mix.coffee([
         'site.coffee',
         'front.coffee',
