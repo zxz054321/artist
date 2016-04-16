@@ -12,20 +12,15 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function (mix) {
-    mix.styles([
-        'site.css',
-        'front.css'
+    mix.less([
+        'site.less',
+        'front/*.less',
     ], 'public/front.css');
 
-   mix.styles([
-        'site.css',
-        'admin.css'
+    mix.styles([
+        'site.less',
+        'admin.less'
     ], 'public/admin.css');
-
-    //mix.less([
-    //    'site.less',
-    //    //more sytles
-    //], 'public/all.css');
 
     mix.coffee([
         'site.coffee',

@@ -1,0 +1,38 @@
+@small-screen: 768px;
+
+body {
+    word-break: break-all;
+}
+
+footer {
+    background: #3a4145;
+    color: #9ea8ad;
+    padding: 2em 1em 1em 1em;
+
+    @media screen and (max-width: @small-screen) {
+        padding-top: 1em;
+    }
+
+    * {
+        @media screen and (max-width: @small-screen) {
+            text-align: center;
+        }
+    }
+
+    .left {
+        text-align: left;
+    }
+
+    .right {
+        text-align: right;
+    }
+
+    .brand {
+        color: #69757c;
+    }
+}
+
+.navbar {
+    background: rgba(0, 0, 0, 0.75);
+    border: 0;
+}

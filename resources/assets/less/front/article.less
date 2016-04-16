@@ -1,0 +1,35 @@
+@small-screen: 768px;
+@my-screen-width: 520px;
+
+.parallax-window {
+    background: transparent;
+    margin-bottom: 2em;
+}
+
+.spot {
+    position: absolute;
+    color: white;
+    text-shadow: 1px 1px 15px #2a323a,
+    1px 1px 15px #2a323a,
+    1px 1px 15px #2a323a;
+
+    @media screen and (max-width: @my-screen-width) {
+        text-align: left;
+        padding-right: 15px;
+    }
+}
+
+.article {
+    &.container {
+        max-width: @small-screen;
+        margin: 2em auto 2em auto;
+    }
+
+    p {
+        margin: 0 0 2em;
+
+        &:last-child {
+            margin-bottom: 1em;
+        }
+    }
+}
