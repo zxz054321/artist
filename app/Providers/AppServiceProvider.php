@@ -19,6 +19,9 @@ class AppServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
+        $app->view(function (array $controllerResult) use ($app) {
+            return $app->json($controllerResult);
+        });
     }
 
     /**
