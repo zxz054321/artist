@@ -4,6 +4,7 @@
  */
 
 use App\Foundation\Application;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -117,4 +118,22 @@ function session($key = null, $default = null)
     }
 
     return $session->get($key, $default);
+}
+
+/**
+ * Generate a url based on base url.
+ *
+ * @param  string $relative
+ * @return string
+ */
+function base_url($relative = null)
+{
+    /** @var Request $request */
+    $request = app('request');
+
+    if ($relative) {
+        return $request->getBaseUrl().'/'.$relative;
+    } else {
+        return $request->getBaseUrl();
+    }
 }
