@@ -137,3 +137,17 @@ function base_url($relative = null)
         return $request->getBaseUrl();
     }
 }
+
+/**
+ * Generate an asset path for the application.
+ *
+ * @param  string $path
+ * @return string
+ */
+function asset($path)
+{
+    /** @var Request $request */
+    $request = app('request');
+
+    return $request->getBasePath().'/'.$path;
+}
