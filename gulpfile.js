@@ -17,9 +17,9 @@ elixir(function (mix) {
         'front/*.less',
     ], 'public/front.css');
 
-    mix.styles([
+    mix.less([
         'site.less',
-        'admin.less'
+        'admin/*.less'
     ], 'public/admin.css');
 
     mix.coffee([
