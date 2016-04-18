@@ -24,6 +24,18 @@ class AppServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
+        $app->view(function (array $controllerResult) use ($app) {
+            return $app->json($controllerResult);
+        });
+
+        $app['twig'] = $app->share($app->extend('twig', function ($twig) {
+            $twig->addFunction(new \Twig_SimpleFunction('asset', function ($path) {
+                return asset($path);
+            }));
+
+            return $twig;
+        }));
+
         $app['disk'] = $app->share(function () {
             $adapter    = new Local(STORAGE_PATH.'/app');
             $filesystem = new Filesystem($adapter);
