@@ -1,19 +1,9 @@
 {% extends "admin/_layout.twig" %}
 
-{% block style %}
-    {{ parent() }}
-
-    <link href="//cdn.bootcss.com/simplemde/1.10.0/simplemde.min.css" rel="stylesheet">
-    <style>
-        .editor-toolbar {
-            background: white;
-        }
-    </style>
-{% endblock %}
-
 {% block title %}Write{% endblock %}
 
 {% block page %}
+    <link href="//cdn.bootcss.com/simplemde/1.10.0/simplemde.min.css" rel="stylesheet">
     <form
             ng-app="app"
             ng-controller="WriteCtrl"

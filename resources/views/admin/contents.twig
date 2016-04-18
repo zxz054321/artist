@@ -2,20 +2,6 @@
 
 {% block title %} Contents {% endblock %}
 
-{% block style %}
-    {{ parent() }}
-
-    <style>
-        .list-group-item {
-            margin-bottom: 1em;
-        }
-
-        .list-group-item-text .status {
-            font-size: 75%;
-        }
-    </style>
-{% endblock %}
-
 {% block page %}
     <div ng-app="app"
          ng-controller="ContentCtrl"
@@ -34,17 +20,5 @@
             Revealed
         </p>
         <contentlist data="revealed"></contentlist>
-
-        {#<nav class="text-center">#}
-        {#<ul class="pagination">#}
-        {#<li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>#}
-        {#<li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>#}
-        {#<li><a href="#">2</a></li>#}
-        {#<li><a href="#">3</a></li>#}
-        {#<li><a href="#">4</a></li>#}
-        {#<li><a href="#">5</a></li>#}
-        {#<li><a href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>#}
-        {#</ul>#}
-        {#</nav>#}
     </div>
 {% endblock %}
