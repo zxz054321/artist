@@ -4,10 +4,9 @@
  */
 
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\ContentController;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\ContentController;
 use App\Http\Controllers\FrontController;
-use App\Http\Controllers\Admin\TagController;
 use Silex\ControllerCollection;
 
 if (!defined('MIDDLEWARE')) {

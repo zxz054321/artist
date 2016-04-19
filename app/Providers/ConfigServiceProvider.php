@@ -67,7 +67,6 @@ class ConfigServiceProvider implements ServiceProviderInterface
 
     /**
      * Get the configuration file nesting path.
-
      * @param SplFileInfo $file
      * @param $configPath
      * @return string

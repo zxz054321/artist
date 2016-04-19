@@ -15,6 +15,7 @@ return function (Request $request, Application $app) {
             return $app->redirect(route('dashboard'));
         }
 
+        /** @noinspection PhpInconsistentReturnPointsInspection */
         return;
     }
 

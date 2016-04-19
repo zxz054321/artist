@@ -16,6 +16,11 @@ class AdminController
         return file_get_contents($tpl);
     }
 
+    public function dashboard()
+    {
+        return $this->view('dashboard');
+    }
+
     public function view($route)
     {
         $file = VIEW_PATH.'/admin/'.$route.'.twig';

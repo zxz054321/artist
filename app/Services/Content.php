@@ -6,7 +6,6 @@
 namespace App\Services;
 
 use App\Repositories\Content\Content as ContentRepository;
-use App\Repositories\Content\Drivers\File;
 use App\Repositories\Content\Exceptions\NotFoundException;
 use App\Repositories\Content\Exceptions\RouteExistsException;
 

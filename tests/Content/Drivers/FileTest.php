@@ -45,7 +45,7 @@ class FileTest extends TestCase
         ]));
 
         try {
-            $driver->load('index');
+            $driver->load();
         } catch (\Exception $e) {
             $this->assertInstanceOf(DataSpoiledException::class, $e);
         }

@@ -5,6 +5,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Services\Content;
 use Symfony\Component\HttpFoundation\Request;
 
 class ContentController
@@ -13,7 +14,7 @@ class ContentController
 
     public function __construct()
     {
-        $this->service = new \App\Services\Content();
+        $this->service = new Content();
     }
 
     public function all()
@@ -33,6 +34,13 @@ class ContentController
         return app()->json([
             'exists' => $this->service->getRevealed()
                 ->exists(['route' => $route]),
+        ]);
+    }
+
+    public function delete($id)
+    {
+        return app()->json([
+            'result' => $this->service->delete($id),
         ]);
     }
 
@@ -101,12 +109,6 @@ class ContentController
         return $arr;
     }
 
-    public function delete($id)
-    {
-        return app()->json([
-            'result' => $this->service->delete($id),
-        ]);
-    }
 
     public function store(Request $request)
     {

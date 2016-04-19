@@ -30,6 +30,6 @@ class AuthController
     {
         $this->auth->logout();
 
-        return app()->redirect(route('admin',['route'=>'login']));
+        return app()->redirect(route('admin', ['route' => 'login']));
     }
 }

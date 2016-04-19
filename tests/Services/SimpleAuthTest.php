@@ -1,7 +1,7 @@
 <?php
-use App\Foundation\Application;
+
 use App\Services\SimpleAuth;
-use Illuminate\Config\Repository;
+
 
 /**
  * Author: Abel Halo <zxz054321@163.com>

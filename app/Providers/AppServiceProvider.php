@@ -7,14 +7,26 @@ namespace App\Providers;
 
 use App\Repositories\Content\Content;
 use App\Repositories\Content\Drivers\File;
-use App\Services\Tag;
+use League\Flysystem\Adapter\Local;
+use League\Flysystem\Filesystem;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use League\Flysystem\Filesystem;
-use League\Flysystem\Adapter\Local;
 
 class AppServiceProvider implements ServiceProviderInterface
 {
+
+    /**
+     * Bootstraps the application.
+     *
+     * This method is called after all services are registered
+     * and should be used for "dynamic" configuration (whenever
+     * a service must be requested).
+     * @param Application $app
+     */
+    public function boot(Application $app)
+    {
+    }
+
     /**
      * Registers services on the given app.
      *
@@ -23,6 +35,20 @@ class AppServiceProvider implements ServiceProviderInterface
      * @param Application $app
      */
     public function register(Application $app)
+    {
+        $app['disk'] = $app->share(function () {
+            $adapter    = new Local(STORAGE_PATH.'/app');
+            $filesystem = new Filesystem($adapter);
+
+            return $filesystem;
+        });
+
+        $this->setupView($app);
+
+        $this->registerContent($app);
+    }
+
+    protected function setupView(Application $app)
     {
         $app->view(function (array $controllerResult) use ($app) {
             return $app->json($controllerResult);
@@ -35,14 +61,10 @@ class AppServiceProvider implements ServiceProviderInterface
 
             return $twig;
         }));
+    }
 
-        $app['disk'] = $app->share(function () {
-            $adapter    = new Local(STORAGE_PATH.'/app');
-            $filesystem = new Filesystem($adapter);
-
-            return $filesystem;
-        });
-
+    protected function registerContent(Application $app)
+    {
         $app['content.revealed'] = $app->share(function () {
             return new Content(new File('contents/revealed'));
         });
@@ -50,17 +72,5 @@ class AppServiceProvider implements ServiceProviderInterface
         $app['content.unrevealed'] = $app->share(function () {
             return new Content(new File('contents/unrevealed'));
         });
-    }
-
-    /**
-     * Bootstraps the application.
-     *
-     * This method is called after all services are registered
-     * and should be used for "dynamic" configuration (whenever
-     * a service must be requested).
-     * @param Application $app
-     */
-    public function boot(Application $app)
-    {
     }
 }
