@@ -1,4 +1,5 @@
-angular.module('app').controller 'WriteCtrl', [
+angular.module('app')
+.controller 'WriteCtrl', [
     '$scope'
     '$http'
     ($scope, $http)->
@@ -23,7 +24,7 @@ angular.module('app').controller 'WriteCtrl', [
         $scope.setType = (type)->
             $scope.data.status = type
 
-        $scope.onBlur = ->
+        $scope.onRouteBlur = ->
             route = $scope.data.route
             if route and (route isnt $scope.oldRoute)
                 $http.get('content/check?route=' + route)

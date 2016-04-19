@@ -23,25 +23,29 @@
                                    ng-model="data.title">
                         </div>
 
+                        {# route ==================================#}
                         <div ng-class="{
                         'form-group':true,
                         'has-success': check.route,
-                        'has-error':!check.route
-                }">
+                        'has-error':!check.route}">
                             <label>Route</label>
+
                             <label class="control-label"
                                    ng-show="checked.route">
                                 {{ i.ng("check.route ? 'Nice name' : 'Already exists'") }}
                             </label>
+
                             <input type="text" class="form-control"
+                                   placeholder="page-foo-bar-url"
                                    ng-model="data.route"
-                                   ng-blur="onBlur()">
+                                   ng-blur="onRouteBlur()">
                         </div>
+                        {# /.route ==================================#}
 
                         <div class="form-group">
                             <label>Summary</label>
-                    <textarea class="form-control"
-                              ng-model="data.summary"></textarea>
+                            <textarea class="form-control"
+                                      ng-model="data.summary"></textarea>
                         </div>
 
                         <div class="form-group">
@@ -56,21 +60,27 @@
             <div class="col-sm-4">
                 <div class="panel panel-default">
                     <div class="panel-body">
+                        {#Tags ===================================#}
                         <div class="form-group">
                             <label>Tags</label>
                             <input type="text" class="form-control"
+                                   placeholder="foo,bar"
                                    ng-model="data.tags">
                         </div>
+                        {# /.Tags ===================================#}
 
+                        {#Cover===========================#}
                         <div class="form-group">
                             <label>Cover</label>
                             <input type="url" class="form-control"
+                                   placeholder="Picture url"
                                    ng-model="data.cover">
 
                             <img class="img-responsive"
                                  ng-src="{{ i.ng('data.cover') }}"
                                  ng-show="data.cover">
                         </div>
+                        {# /.Cover===========================#}
                     </div>
                 </div>
 

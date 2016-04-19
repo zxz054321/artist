@@ -23,7 +23,7 @@ class FrontController
     public function index()
     {
         if ($this->content->collection()->isEmpty()) {
-            abort(503, 'There is no content to display');
+         exit('There is no content to display');
         }
 
         return view('home', [
