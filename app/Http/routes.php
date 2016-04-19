@@ -39,6 +39,7 @@ $admin->get('content/{id}', ContentController::class.'::raw');
 $admin->put('content/{id}', ContentController::class.'::update');
 $admin->delete('content/{id}', ContentController::class.'::delete');
 
+$admin->get('{route}.ng', AdminController::class.'::ngView');
 $admin->get('{route}', AdminController::class.'::view')->bind('admin');
 
 $app->mount('admin', $admin);

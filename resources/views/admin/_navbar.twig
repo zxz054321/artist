@@ -15,12 +15,24 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a href="{{ i.url('admin/contents') }}">Contents</a></li>
+                <li>
+                    <a href="{{ i.url('admin/contents') }}">
+                        Contents
+                    </a>
+                </li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <li><a class="btn btn-primary navbar-btn" href="{{ i.url('admin/write') }}">Write</a></li>
-                <li><a href="{{ url('logout') }}"><em>Logout</em></a></li>
+                <li>
+                    <a class="btn btn-primary navbar-btn" href="{{ i.url('admin/write') }}">
+                        Write
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url('logout') }}">
+                        <em>Logout</em>
+                    </a>
+                </li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div>
