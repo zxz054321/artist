@@ -10,33 +10,8 @@ use Silex\Application\TwigTrait;
 
 class AdminController
 {
-    public function login()
+    public function view($route)
     {
-        return view('admin/login');
-    }
-
-    public function dashboard()
-    {
-        return view('admin/dashboard');
-    }
-
-    public function write()
-    {
-        return view('admin/write');
-    }
-
-    public function contents()
-    {
-        return view('admin/contents');
-    }
-
-    public function tags()
-    {
-        return view('admin/tags');
-    }
-
-    public function navbar()
-    {
-        return view('admin/navbar');
+        return view('admin/'.$route);
     }
 }

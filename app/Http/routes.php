@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ContentController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\Admin\TagController;
+use Silex\ControllerCollection;
 
 if (!defined('MIDDLEWARE')) {
     define('MIDDLEWARE', APP_PATH.'/Http/Middleware/');
@@ -25,15 +26,11 @@ $app->get('auth/logout', AuthController::class.'::logout')->bind('logout');
 /*
  * Admin
  */
+/** @var ControllerCollection $admin */
 $admin = $app['controllers_factory']
     ->before(require MIDDLEWARE.'Authenticate.php');
 
-$admin->get('/', AdminController::class.'::login');
-$admin->get('login', AdminController::class.'::login')->bind('login');
-$admin->get('dashboard', AdminController::class.'::dashboard')->bind('dashboard');
-
-$admin->get('write', AdminController::class.'::write')->bind('write');
-$admin->get('contents', AdminController::class.'::contents')->bind('contents');
+$admin->get('/', AdminController::class.'::dashboard');
 
 $admin->get('content', ContentController::class.'::all');
 $admin->get('content/check', ContentController::class.'::check');
@@ -41,5 +38,7 @@ $admin->post('content/store', ContentController::class.'::store');
 $admin->get('content/{id}', ContentController::class.'::raw');
 $admin->put('content/{id}', ContentController::class.'::update');
 $admin->delete('content/{id}', ContentController::class.'::delete');
+
+$admin->get('{route}', AdminController::class.'::view')->bind('admin');
 
 $app->mount('admin', $admin);

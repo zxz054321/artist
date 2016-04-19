@@ -1,6 +1,7 @@
 {% extends "admin/_bootstrap.twig" %}
 
 {% macro ng(contents) %}{{ '{{' ~ contents ~ '}}' }}{% endmacro %}
+{% macro url(url) %}{{ app.request.baseUrl }}/{{ url }}{% endmacro %}
 
 {% import _self as i %}
 
