@@ -19,6 +19,6 @@ return function (Request $request, Application $app) {
     }
 
     if (!app('session.test') && $auth->guest()) {
-        return $app->redirect(route('login'));
+        return $app->redirect(route('admin', ['route' => 'login']));
     }
 };

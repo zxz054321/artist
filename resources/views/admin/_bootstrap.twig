@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+{% macro ng(contents) %}{{ '{{' ~ contents ~ '}}' }}{% endmacro %}
+{% macro url(url) %}{{ app.request.baseUrl }}/{{ url }}{% endmacro %}
+{% import _self as i %}
 <html lang="en">
 <head>
     <meta charset="utf-8">
